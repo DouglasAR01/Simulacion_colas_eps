@@ -4,18 +4,18 @@
  * @author Douglas R
  */
 import java.util.Random;
-public class Persona {
+public class Persona{
     private int tiempoEspera; //Tiempo que lleva en la cola
     private boolean atendido; //Si está siendo atendido
     public final int PRIORIDAD_PACIENTE;
     public final int TIEMPO_CONSULTA; //Tiempo que tardará en el consultorio
     
-    public Persona(int TIEMPO_MAX_CONSULTA, int prioridad){
+    public Persona(int TIEMPO_MAX_CONSULTA){
         tiempoEspera = 0;
         atendido = false;
         Random random = new Random();
         TIEMPO_CONSULTA = random.nextInt(TIEMPO_MAX_CONSULTA-1)+1;
-        PRIORIDAD_PACIENTE = prioridad;
+        PRIORIDAD_PACIENTE = random.nextInt(3);
     }
 
     public int getTiempoEspera() {
