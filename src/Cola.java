@@ -9,60 +9,44 @@ import java.util.Comparator;
 public class Cola {
     private ArrayList<Persona> pacientes;
     private ArrayList<Medico> medicos;
-    private int cantidadPacientesTotal;
-    private int cantidadAltaPrioridad;
-    private int cantidadMediaPrioridad;
-    private int cantidadBajaPrioridad;
-    private int tiempoTotalEspera;
-    private int tiempoAltaPrioridad;
-    private int tiempoMediaPrioridad;
-    private int tiempoBajaPrioridad;
+    private int CANTIDAD_PRIORIDADES = 4;
+    private int[] cantidadPacientes;
+    private int[] cantidadPacientesAtendidos;
+    private int[] tiemposEspera;
 
     public Cola() {
-        tiempoTotalEspera = 0;
-        cantidadPacientesTotal = 0;
         pacientes = new ArrayList();
         medicos = new ArrayList();
+        cantidadPacientes = new int[CANTIDAD_PRIORIDADES];
+        cantidadPacientesAtendidos = new int[CANTIDAD_PRIORIDADES];
+        tiemposEspera = new int[CANTIDAD_PRIORIDADES];
     }
-
-    public int getCantidadPacientesTotal() {
-        return cantidadPacientesTotal;
+    public Cola(int cantidadPrioridades) {
+        pacientes = new ArrayList();
+        medicos = new ArrayList();
+        CANTIDAD_PRIORIDADES = cantidadPrioridades+1;
+        cantidadPacientes = new int[CANTIDAD_PRIORIDADES];
+        cantidadPacientesAtendidos = new int[CANTIDAD_PRIORIDADES];
+        tiemposEspera = new int[CANTIDAD_PRIORIDADES];
     }
-
-    public int getCantidadAltaPrioridad() {
-        return cantidadAltaPrioridad;
+    
+    public int[] getCantidadPacientes(){
+        return cantidadPacientes;
     }
-
-    public int getCantidadMediaPrioridad() {
-        return cantidadMediaPrioridad;
+    
+    public int[] getCantidadPacientesAtendidos(){
+        return cantidadPacientesAtendidos;
     }
-
-    public int getCantidadBajaPrioridad() {
-        return cantidadBajaPrioridad;
-    }
-
-    public int getTiempoTotalEspera() {
-        return tiempoTotalEspera;
-    }
-
-    public int getTiempoAltaPrioridad() {
-        return tiempoAltaPrioridad;
-    }
-
-    public int getTiempoMediaPrioridad() {
-        return tiempoMediaPrioridad;
-    }
-
-    public int getTiempoBajaPrioridad() {
-        return tiempoBajaPrioridad;
+    
+    public int[] getTiemposEspera(){
+        return tiemposEspera;
     }
     
     public double[] getPromedioTiemposEspera(){
         double[] res = new double[4];
-        res[0] = (float) tiempoAltaPrioridad/cantidadAltaPrioridad;
-        res[1] = (float) tiempoMediaPrioridad/cantidadMediaPrioridad;
-        res[2] = (float) tiempoBajaPrioridad/cantidadBajaPrioridad;
-        res[3] = (float) tiempoTotalEspera/cantidadPacientesTotal;
+        for (int i = 0; i<CANTIDAD_PRIORIDADES; i++){
+            res[i] = (float) tiemposEspera[i]/cantidadPacientesAtendidos[i];
+        }
         return res;
     }
     
@@ -71,33 +55,16 @@ public class Cola {
     }
     
     public void asignarTiempo(Persona paciente){
-        switch(paciente.PRIORIDAD_PACIENTE){
-            case 0:
-                tiempoAltaPrioridad += paciente.getTiempoEspera();
-                break;
-            case 1:
-                tiempoMediaPrioridad += paciente.getTiempoEspera();
-                break;
-            case 2:
-                tiempoBajaPrioridad += paciente.getTiempoEspera();
-                break;
-        }
+        tiemposEspera[CANTIDAD_PRIORIDADES-1] += paciente.getTiempoEspera();
+        cantidadPacientesAtendidos[CANTIDAD_PRIORIDADES-1]++;
+        cantidadPacientesAtendidos[paciente.PRIORIDAD_PACIENTE]++;
+        tiemposEspera[paciente.PRIORIDAD_PACIENTE] += paciente.getTiempoEspera();
     }
     
     public void agregarPaciente(Persona paciente){
         pacientes.add(paciente);
-        cantidadPacientesTotal++;
-        switch(paciente.PRIORIDAD_PACIENTE){
-            case 0:
-                cantidadAltaPrioridad++;
-                break;
-            case 1:
-                cantidadMediaPrioridad++;
-                break;
-            case 2:
-                cantidadBajaPrioridad++;
-                break;
-        }
+        cantidadPacientes[CANTIDAD_PRIORIDADES-1]++;
+        cantidadPacientes[paciente.PRIORIDAD_PACIENTE]++;
     }
     
     public void removerPaciente(Persona paciente){
@@ -122,7 +89,6 @@ public class Cola {
             if(!paciente.isAtendido()){
                 if(!medicosDisponibles.isEmpty()){
                     medicosDisponibles.get(0).recibirPaciente(paciente);
-                    tiempoTotalEspera += paciente.getTiempoEspera();
                     asignarTiempo(paciente);
                     medicosDisponibles.remove(0);
                     paciente.setAtendido(true);
@@ -136,14 +102,9 @@ public class Cola {
     public void destruir() {
         pacientes.clear();
         medicos.clear();
-        cantidadPacientesTotal = 0;
-        cantidadAltaPrioridad = 0;
-        cantidadMediaPrioridad = 0;
-        cantidadBajaPrioridad = 0;
-        tiempoTotalEspera = 0;
-        tiempoAltaPrioridad = 0;
-        tiempoMediaPrioridad = 0;
-        tiempoBajaPrioridad = 0;
+        cantidadPacientes = new int[CANTIDAD_PRIORIDADES];
+        cantidadPacientesAtendidos = new int[CANTIDAD_PRIORIDADES];
+        tiemposEspera = new int[CANTIDAD_PRIORIDADES];
     }
     
     public void ordenar(){
