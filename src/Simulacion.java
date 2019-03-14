@@ -15,9 +15,7 @@ public class Simulacion {
      * PARÁMETROS
      */
     public static final int CANTIDAD_MAXIMA_PERSONAS = 30; // Personas
-    public static final int CANTIDAD_MEDICOS_PRIORIDAD_0 = 3; // Medicos
-    public static final int CANTIDAD_MEDICOS_PRIORIDAD_1 = 2;
-    public static final int CANTIDAD_MEDICOS_PRIORIDAD_2 = 2;
+    public static final int CANTIDAD_MEDICOS = 3; // Medicos disponibles
     public static final int TIEMPO_MAXIMO_CONSULTA = 30; // Minutos
     public static final int TIEMPO_SIMULACION = 2*60; //Horas*Minutos
     public static final int NUMERO_ITERACIONES = 5;
@@ -26,7 +24,7 @@ public class Simulacion {
         
         Cola cola = new Cola();
         for (int iteracion = 1; iteracion<=NUMERO_ITERACIONES; iteracion++){
-            inicializarCola(cola, CANTIDAD_MEDICOS_PRIORIDAD_0);
+            inicializarCola(cola);
             cola.ordenar();
             for (int minuto = 1; minuto<=TIEMPO_SIMULACION; minuto++){
                 cola.iterar();
@@ -48,8 +46,8 @@ public class Simulacion {
         }
     }
     
-    public static void inicializarCola(Cola cola, int cantidadMedicos){
-        for (int i = 0; i<cantidadMedicos; i++){
+    public static void inicializarCola(Cola cola){
+        for (int i = 0; i<CANTIDAD_MEDICOS; i++){
             cola.agregarMedico(new Medico());
         }
         for (int i = 0; i<CANTIDAD_MAXIMA_PERSONAS; i++){
