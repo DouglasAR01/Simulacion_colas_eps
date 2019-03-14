@@ -17,7 +17,7 @@ public class Simulacion {
     public static final int CANTIDAD_MEDICOS = 5; // Medicos disponibles
     public static final int TIEMPO_MAXIMO_CONSULTA = 30; // Minutos
     public static final int TIEMPO_SIMULACION = 2*60; //Horas*Minutos
-    public static final int NUMERO_ITERACIONES = 5;
+    public static final int NUMERO_ITERACIONES = 1;
     public static final int NUMERO_PRIORIDADES = 3;
 
     public static void main(String[] args) {
@@ -35,10 +35,10 @@ public class Simulacion {
             int[] totalPacientes = cola.getCantidadPacientes();
             for (int i = 0; i<NUMERO_PRIORIDADES; i++){
                 System.out.println(
-                        "Cola #:"+i+"\n"+
-                        "  -> Tiempo promedio: "+tiempos[i]+"\n"+
+                        "Prioridad #:"+i+"\n"+
+                        "  -> Tiempo espera promedio: "+tiempos[i]+"\n"+
                         "  -> Pacientes totales: "+totalPacientes[i]+"\n"+
-                        "  -> Pacientes atentidos: "+atendidos[i]+"\n"
+                        "  -> Pacientes atendidos: "+atendidos[i]+"\n"
                         );
             }
             System.out.println(
