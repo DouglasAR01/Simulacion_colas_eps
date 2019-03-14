@@ -8,21 +8,21 @@
  *
  * @author Douglas
  */
-import java.util.Random;
 public class Simulacion {
     
     /**
      * PARÁMETROS
      */
     public static final int CANTIDAD_MAXIMA_PERSONAS = 30; // Personas
-    public static final int CANTIDAD_MEDICOS = 3; // Medicos disponibles
+    public static final int CANTIDAD_MEDICOS = 5; // Medicos disponibles
     public static final int TIEMPO_MAXIMO_CONSULTA = 30; // Minutos
     public static final int TIEMPO_SIMULACION = 2*60; //Horas*Minutos
     public static final int NUMERO_ITERACIONES = 5;
+    public static final int NUMERO_PRIORIDADES = 3;
 
     public static void main(String[] args) {
         
-        Cola cola = new Cola();
+        Cola cola = new Cola(NUMERO_PRIORIDADES);
         for (int iteracion = 1; iteracion<=NUMERO_ITERACIONES; iteracion++){
             inicializarCola(cola);
             cola.ordenar();
@@ -30,17 +30,22 @@ public class Simulacion {
                 cola.iterar();
             }
             System.out.println("INFORME ITERACION "+iteracion);
-            double[] resultados = cola.getPromedioTiemposEspera();
-            System.out.println("Tiempos de espera promedios en colas: \n"+
-                                "  ->Alta prioridad: "+resultados[0]+"\n"+
-                                "  ->Media prioridad: "+resultados[1]+"\n"+
-                                "  ->Baja prioridad: "+resultados[2]+"\n"+
-                                "  ->Todas: "+resultados[3]+"\n");
-            System.out.println("Número de personas por cola: \n"+
-                               "  ->Alta prioridad: "+cola.getCantidadAltaPrioridad()+"\n"+
-                               "  ->Media prioridad: "+cola.getCantidadMediaPrioridad()+"\n"+
-                               "  ->Baja prioridad: "+cola.getCantidadBajaPrioridad()+"\n"+
-                               "  ->Todas: "+cola.getCantidadPacientesTotal()+"\n");
+            double[] tiempos = cola.getPromedioTiemposEspera();
+            int[] atendidos = cola.getCantidadPacientesAtendidos();
+            int[] totalPacientes = cola.getCantidadPacientes();
+            for (int i = 0; i<NUMERO_PRIORIDADES; i++){
+                System.out.println(
+                        "Cola #:"+i+"\n"+
+                        "  -> Tiempo promedio: "+tiempos[i]+"\n"+
+                        "  -> Pacientes totales: "+totalPacientes[i]+"\n"+
+                        "  -> Pacientes atentidos: "+atendidos[i]+"\n"
+                        );
+            }
+            System.out.println(
+                    "Total pacientes: "+totalPacientes[NUMERO_PRIORIDADES]+"\n"+
+                    "Total pacientes atendidos: "+atendidos[NUMERO_PRIORIDADES]+"\n"+
+                    "Total tiempos espera promedios: "+tiempos[NUMERO_PRIORIDADES]+"\n"
+                    );
             cola.destruir();
             System.out.println("FIN INFORME \n");
         }
