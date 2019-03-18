@@ -10,12 +10,12 @@ public class Persona{
     public final int PRIORIDAD_PACIENTE;
     public final int TIEMPO_CONSULTA; //Tiempo que tardará en el consultorio
     
-    public Persona(int TIEMPO_MAX_CONSULTA){
+    public Persona(int TIEMPO_MAX_CONSULTA, int cantidadPrioridades){
         tiempoEspera = 0;
         atendido = false;
         Random random = new Random();
         TIEMPO_CONSULTA = random.nextInt(TIEMPO_MAX_CONSULTA-1)+1;
-        PRIORIDAD_PACIENTE = random.nextInt(3);
+        PRIORIDAD_PACIENTE = random.nextInt(cantidadPrioridades+1);
     }
 
     public int getTiempoEspera() {

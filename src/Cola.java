@@ -43,7 +43,7 @@ public class Cola {
     }
     
     public double[] getPromedioTiemposEspera(){
-        double[] res = new double[4];
+        double[] res = new double[CANTIDAD_PRIORIDADES];
         for (int i = 0; i<CANTIDAD_PRIORIDADES; i++){
             res[i] = (float) tiemposEspera[i]/cantidadPacientesAtendidos[i];
         }
